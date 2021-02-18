@@ -27,3 +27,13 @@ You can install the released version of demopckg from [GitHub](https://github.co
 ``` r
 devtools::install_github("xvtyzn/nyankomicro")
 ```
+
+## example
+
+```{r}
+library(phyloseq)
+library(nyankomicro)
+data("GlobalPatterns")
+
+microbiome_barplot(GlobalPatterns, "Order", "SampleType", 10)
+```
