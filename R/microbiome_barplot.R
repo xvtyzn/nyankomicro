@@ -40,17 +40,17 @@ microbiome_barplot <- function(physeq,
   agg_phylo_rel <- transform_sample_counts(agg_phylo, function(x)100* x / sum(x))
   level_tax <- tax_table(agg_phylo_rel)[,level] %>%
     as.data.frame() %>%
-    tibble::rownames_to_column("ASV")
+    rownames_to_column("ASV")
   level_tax[is.na(level_tax)] <- "Undetermined"
 
   taxotu_table <- otu_table(agg_phylo_rel) %>%
     as.data.frame() %>%
-    tibble::rownames_to_column("ASV") %>%
-    dplyr::left_join(level_tax, by = ("ASV" = "ASV")) %>%
-    dplyr::select(-ASV) %>%
-    dplyr::group_by_(.dots=level) %>%
-    dplyr::summarise_all(sum) %>%
-    tibble::column_to_rownames(level)
+    rownames_to_column("ASV") %>%
+    left_join(level_tax, by = ("ASV" = "ASV")) %>%
+    select(-ASV) %>%
+    group_by(across(all_of(level))) %>%
+    summarise_all(sum) %>%
+    column_to_rownames(level)
 
   if(threshold == "min"){
     taxotu_table$threshold <- apply(taxotu_table, 1, min)
@@ -66,25 +66,25 @@ microbiome_barplot <- function(physeq,
   undetermined <- taxotu_table["Undetermined", ]
 
   show_tax <- taxotu_table %>%
-    tibble::rownames_to_column("domain") %>%
-    dplyr::filter(domain != "Undetermined") %>%
-    dplyr::filter(threshold >= plot_percent) %>%
-    tibble::column_to_rownames("domain")
+    rownames_to_column("domain") %>%
+    filter(domain != "Undetermined") %>%
+    filter(threshold >= plot_percent) %>%
+    column_to_rownames("domain")
 
   unshow_tax <- taxotu_table %>%
-    tibble::rownames_to_column("domain") %>%
-    dplyr::filter(domain != "Undetermined") %>%
-    dplyr::filter(threshold < plot_percent) %>%
-    tibble::column_to_rownames("domain") %>%
+    rownames_to_column("domain") %>%
+    filter(domain != "Undetermined") %>%
+    filter(threshold < plot_percent) %>%
+    column_to_rownames("domain") %>%
     colSums()
 
   all_list <- list(show_tax, undetermined, unshow_tax)
   all_tax <- purrr::reduce(all_list, rbind)
   n <- nrow(all_tax)
-  rownames(all_tax)[n] <- "Others"
+  rownames(all_tax)[n] <- paste0("Others (<",plot_percent,"%)")
 
   all_tax_table <- all_tax %>%
-    dplyr::select(-threshold) %>%
+    select(-threshold) %>%
     t()
 
   if(nrow(all_tax) > length(COLORS)){
@@ -96,12 +96,12 @@ microbiome_barplot <- function(physeq,
     sample_data() %>%
     as.matrix() %>%
     as.data.frame() %>%
-    tibble::rownames_to_column("Sample")
+    rownames_to_column("Sample")
 
   all_ggdata <- all_tax_table %>%
     as.data.frame() %>%
-    tibble::rownames_to_column("Sample") %>%
-    dplyr::left_join(sample_status,  by = ("Sample" = "Sample")) %>%
+    rownames_to_column("Sample") %>%
+    left_join(sample_status,  by = ("Sample" = "Sample")) %>%
     reshape2::melt()
 
   taxa_data_uniq <- unique(all_ggdata$variable)

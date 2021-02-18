@@ -16,6 +16,7 @@ knitr::opts_chunk$set(
 # nyankomicro
 
 <!-- badges: start -->
+
 <!-- badges: end -->
 
 nyankomicro is a in-house package that aims to make the plots more beautiful.
@@ -30,7 +31,7 @@ devtools::install_github("xvtyzn/nyankomicro")
 
 ## example
 
-```{r}
+```{r exaple, fig.height=6, fig.width=12, warning=FALSE}
 library(phyloseq)
 library(nyankomicro)
 data("GlobalPatterns")
