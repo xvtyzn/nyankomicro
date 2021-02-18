@@ -116,7 +116,8 @@ microbiome_barplot <- function(physeq,
     scale_fill_manual(values = COLORS, name = " ") +
     theme_classic() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    ggtitle(level)
+    ggtitle(level) +
+    ylab("Relative abundance (%)")
 
   return(gg_bar)
 }
