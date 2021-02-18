@@ -70,7 +70,7 @@ microbiome_barplot <- function(physeq,
     colSums()
 
   all_list <- list(show_tax, undetermined, unshow_tax)
-  all_tax <- reduce(all_list, rbind)
+  all_tax <- purrr::reduce(all_list, rbind)
   n <- nrow(all_tax)
   rownames(all_tax)[n] <- "Others"
 
