@@ -17,8 +17,8 @@ Imports:
     tidyverse,
     phyloseq,
     ggplot2,
-    tibble (>= 3.0.6),
-    dplyr (>= 1.0.2),
+    tibble,
+    dplyr,
     tidyr,
     magrittr,
     reshape2
