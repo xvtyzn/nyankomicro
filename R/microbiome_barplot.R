@@ -2,6 +2,7 @@
 #'
 #' Create a bacterial composition plot using a specific threshold value.
 #'
+#' @title microbiome_barplot
 #' @param physeq phyloseq object
 #' @param level taxonomy level
 #' @param plot_category metadata category
@@ -14,6 +15,7 @@
 #' @importFrom phyloseq tax_table
 #' @importFrom phyloseq otu_table
 #' @importFrom phyloseq sample_data
+#' @importFrom reshape2 melt
 #' @import dplyr
 #' @import tibble
 #' @import ggplot2
@@ -102,7 +104,7 @@ microbiome_barplot <- function(physeq,
     as.data.frame() %>%
     rownames_to_column("Sample") %>%
     left_join(sample_status,  by = ("Sample" = "Sample")) %>%
-    reshape2::melt()
+    melt()
 
   taxa_data_uniq <- unique(all_ggdata$variable)
   all_ggdata$Taxa <- factor(all_ggdata$variable, levels = rev(taxa_data_uniq))
