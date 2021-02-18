@@ -41,7 +41,7 @@ microbiome_barplot <- function(physeq,
     dplyr::select(-ASV) %>%
     group_by_(.dots=level) %>%
     summarise_all(sum) %>%
-    column_to_rownames(level)
+    tibble::column_to_rownames(level)
 
   if(threshold == "min"){
     taxotu_table$threshold <- apply(taxotu_table, 1, min)
@@ -60,13 +60,13 @@ microbiome_barplot <- function(physeq,
     rownames_to_column("domain") %>%
     dplyr::filter(domain != "Undetermined") %>%
     dplyr::filter(threshold >= plot_percent) %>%
-    column_to_rownames("domain")
+    tibble::column_to_rownames("domain")
 
   unshow_tax <- taxotu_table %>%
     rownames_to_column("domain") %>%
     dplyr::filter(domain != "Undetermined") %>%
     dplyr::filter(threshold < plot_percent) %>%
-    column_to_rownames("domain") %>%
+    tibble::column_to_rownames("domain") %>%
     colSums()
 
   all_list <- list(show_tax, undetermined, unshow_tax)
