@@ -104,7 +104,7 @@ microbiome_barplot <- function(physeq,
     as.data.frame() %>%
     rownames_to_column("Sample") %>%
     left_join(sample_status,  by = ("Sample" = "Sample")) %>%
-    melt()
+    reshape2::melt()
 
   taxa_data_uniq <- unique(all_ggdata$variable)
   all_ggdata$Taxa <- factor(all_ggdata$variable, levels = rev(taxa_data_uniq))
