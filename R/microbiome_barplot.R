@@ -8,6 +8,7 @@
 #' @param plot_category metadata category
 #' @param plot_percent threshold persent
 #' @param threshold the way of calculating threshold values
+#' @param na_str
 #'
 #' @return barplot of microbiome composition as ggplot2 object
 #' @importFrom speedyseq tax_glom
@@ -27,7 +28,7 @@
 #'
 microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     "Order", "Family", "Genus", "Species"), plot_category, plot_percent = 10,
-    threshold = "max") {
+    threshold = "max", na_str = c("unidentified", "uncultured")) {
 
     COLORS <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33",
         "#A65628", "#F781BF", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
@@ -56,7 +57,13 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
             This time, we will show a taxa of at least N%.\n")
         taxotu_table$threshold <- apply(taxotu_table, 1, max)
     }
-    undetermined <- taxotu_table["Undetermined", ]
+
+    undetermined_str <- paste(c("Undetermined", na_str), collapse = "|")
+
+    undetermined <- taxotu_table %>%
+        rownames_to_column("domain") %>%
+        filter(grepl(undetermined_str, domain)) %>%
+        colSums()
 
     show_tax <- taxotu_table %>% rownames_to_column("domain") %>% filter(domain !=
         "Undetermined") %>% filter(threshold >= plot_percent) %>% column_to_rownames("domain") %>%
@@ -69,6 +76,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     all_list <- list(show_tax, undetermined, unshow_tax)
     all_tax <- purrr::reduce(all_list, rbind)
     n <- nrow(all_tax)
+    rownames(all_tax)[n-1] <- "Undetermined"
     rownames(all_tax)[n] <- paste0("Others (<", plot_percent, "%)")
 
     all_tax_table <- all_tax %>% select(-threshold) %>% t()

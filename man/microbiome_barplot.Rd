@@ -9,7 +9,8 @@ microbiome_barplot(
   level = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
   plot_category,
   plot_percent = 10,
-  threshold = "max"
+  threshold = "max",
+  na_str = c("unidentified", "uncultured")
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ microbiome_barplot(
 \item{plot_percent}{threshold persent}
 
 \item{threshold}{the way of calculating threshold values}
+
+\item{na_str}{}
 }
 \value{
 barplot of microbiome composition as ggplot2 object
