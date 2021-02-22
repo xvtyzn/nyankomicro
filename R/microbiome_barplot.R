@@ -8,7 +8,7 @@
 #' @param plot_category metadata category
 #' @param plot_percent threshold persent
 #' @param threshold the way of calculating threshold values
-#' @param na_str
+#' @param na_str taxa name to be Undetermined
 #'
 #' @return barplot of microbiome composition as ggplot2 object
 #' @importFrom speedyseq tax_glom
@@ -17,13 +17,12 @@
 #' @importFrom phyloseq otu_table
 #' @importFrom phyloseq sample_data
 #' @importFrom reshape2 melt
+#' @importFrom purrr reduce
 #' @import dplyr
 #' @import tibble
 #' @import ggplot2
 #'
 #' @export
-#'
-#' @examples
 #'
 #'
 microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",

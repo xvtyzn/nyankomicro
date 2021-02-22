@@ -24,7 +24,7 @@ microbiome_barplot(
 
 \item{threshold}{the way of calculating threshold values}
 
-\item{na_str}{}
+\item{na_str}{taxa name to be Undetermined}
 }
 \value{
 barplot of microbiome composition as ggplot2 object
@@ -34,8 +34,4 @@ Create a bacterial composition plot
 }
 \details{
 Create a bacterial composition plot using a specific threshold value.
-}
-\examples{
-
-
 }
