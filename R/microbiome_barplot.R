@@ -44,6 +44,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     taxotu_table <- otu_table(agg_phylo_rel) %>% as.data.frame() %>% rownames_to_column("ASV") %>%
         left_join(level_tax, by = ("ASV" = "ASV")) %>% select(-ASV) %>% group_by(across(all_of(level))) %>%
         summarise_all(sum) %>% column_to_rownames(level)
+    taxotu_table$mean <- apply(taxotu_table, 1, mean)
 
     if (threshold == "min") {
         taxotu_table$threshold <- apply(taxotu_table, 1, min)
@@ -65,12 +66,12 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
         column_to_rownames("domain") %>%
         colSums()
 
-    show_tax <- taxotu_table %>% rownames_to_column("domain") %>% filter(domain !=
-        "Undetermined") %>% filter(threshold >= plot_percent) %>% column_to_rownames("domain") %>%
-        arrange(desc(threshold))
+    show_tax <- taxotu_table %>% rownames_to_column("domain") %>% filter(!grepl(undetermined_str, domain)) %>%
+        filter(threshold >= plot_percent) %>% column_to_rownames("domain") %>%
+        arrange(desc(mean))
 
-    unshow_tax <- taxotu_table %>% rownames_to_column("domain") %>% filter(domain !=
-        "Undetermined") %>% filter(threshold < plot_percent) %>% column_to_rownames("domain") %>%
+    unshow_tax <- taxotu_table %>% rownames_to_column("domain") %>% filter(!grepl(undetermined_str, domain)) %>%
+        filter(threshold < plot_percent) %>% column_to_rownames("domain") %>%
         colSums()
 
     all_list <- list(show_tax, undetermined, unshow_tax)
@@ -79,7 +80,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     rownames(all_tax)[n-1] <- "Undetermined"
     rownames(all_tax)[n] <- paste0("Others (<", plot_percent, "%)")
 
-    all_tax_table <- all_tax %>% select(-threshold) %>% t()
+    all_tax_table <- all_tax %>% select(-c(threshold,mean)) %>% t()
 
     if (nrow(all_tax) > length(COLORS)) {
         stop("You have exceeded the number of colors allowed.
