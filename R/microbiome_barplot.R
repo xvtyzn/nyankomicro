@@ -62,6 +62,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     undetermined <- taxotu_table %>%
         rownames_to_column("domain") %>%
         filter(grepl(undetermined_str, domain)) %>%
+        column_to_rownames("domain") %>%
         colSums()
 
     show_tax <- taxotu_table %>% rownames_to_column("domain") %>% filter(domain !=
