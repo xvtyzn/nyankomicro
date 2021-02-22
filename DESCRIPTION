@@ -25,7 +25,8 @@ Imports:
     speedyseq (>= 0.5.3.9001),
     DESeq2,
     aplot,
-    ggtree
+    ggtree,
+    purrr
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
