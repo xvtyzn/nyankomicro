@@ -2,7 +2,7 @@
 % Please edit documentation in R/microbiome_barplot.R
 \name{microbiome_barplot}
 \alias{microbiome_barplot}
-\title{Create a bacterial composition plot}
+\title{microbiome_barplot}
 \usage{
 microbiome_barplot(
   physeq,
@@ -27,6 +27,9 @@ microbiome_barplot(
 barplot of microbiome composition as ggplot2 object
 }
 \description{
+Create a bacterial composition plot
+}
+\details{
 Create a bacterial composition plot using a specific threshold value.
 }
 \examples{
