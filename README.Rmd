@@ -35,7 +35,7 @@ devtools::install_github("xvtyzn/nyankomicro")
 
 ## example
 
-```{r exaple, fig.height=6, fig.width=12, warning=FALSE}
+```{r exaple, fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
 library(phyloseq)
 library(nyankomicro)
 data("GlobalPatterns")
