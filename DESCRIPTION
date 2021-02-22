@@ -5,7 +5,7 @@ Authors@R:
     person(given = "Keigo",
            family = "Ide",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
+           email = "duskdragonfly5@akane.waseda.jp",
            comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE

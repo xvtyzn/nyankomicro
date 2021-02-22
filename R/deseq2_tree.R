@@ -13,7 +13,11 @@
 #' @import ggtree
 #' @import aplot
 #' @import DESeq2
-#' @import phyloseq
+#' @importFrom phyloseq tax_table
+#' @importFrom phyloseq prune_taxa
+#' @importFrom phyloseq phy_tree
+#' @importFrom phyloseq otu_table
+#' @importFrom phyloseq prune_taxa
 #' @export
 #'
 deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
