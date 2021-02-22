@@ -34,9 +34,42 @@ devtools::install_github("xvtyzn/nyankomicro")
 ``` r
 library(phyloseq)
 library(nyankomicro)
+#> Registered S3 method overwritten by 'treeio':
+#>   method     from
+#>   root.phylo ape
 data("GlobalPatterns")
 
 microbiome_barplot(GlobalPatterns, "Order", "SampleType", 10)
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
+#> Found more than one class "phylo" in cache; using the first, from namespace 'phyloseq'
+#> Also defined by 'tidytree'
 #> Using Sample, X.SampleID, Primer, Final_Barcode, Barcode_truncated_plus_T, Barcode_full_length, SampleType, Description as id variables
 ```
 
