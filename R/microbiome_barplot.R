@@ -43,7 +43,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 
     taxotu_table <- otu_table(agg_phylo_rel) %>% as.data.frame() %>% rownames_to_column("ASV") %>%
         left_join(level_tax, by = ("ASV" = "ASV")) %>% select(-ASV) %>% group_by(across(all_of(level))) %>%
-        summarise_all(sum) %>% column_to_rownames(level)
+        summarise_all(sum) %>% remove_rownames() %>% column_to_rownames(level)
     taxotu_table$mean <- apply(taxotu_table, 1, mean)
 
     if (threshold == "min") {
