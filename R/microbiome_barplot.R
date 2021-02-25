@@ -103,7 +103,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
         drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = COLORS,
         name = " ") + theme_classic() + theme(axis.text.x = element_text(angle = 45,
         hjust = 1)) + ylab("Relative abundance (%)") + guides(fill = guide_legend(reverse = TRUE)) +
-        labs(color = level)
+        labs(fill = level)
 
     return(gg_bar)
 }
