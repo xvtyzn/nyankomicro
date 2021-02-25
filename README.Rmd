@@ -33,7 +33,11 @@ You can install the released version of demopckg from [GitHub](https://github.co
 devtools::install_github("xvtyzn/nyankomicro")
 ```
 
-## example
+``` r
+devtools::update_packages("nyankomicro")
+```
+
+## Example
 
 ```{r exaple, fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
 library(phyloseq)
