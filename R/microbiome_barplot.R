@@ -100,8 +100,8 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 
     gg_bar <- ggplot2::ggplot(all_ggdata, aes(x = Sample, y = value, fill = Taxa)) +
         geom_bar(stat = "identity") + facet_grid(~get(plot_category), margins = FALSE,
-        drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = COLORS,
-        name = " ") + theme_classic() + theme(axis.text.x = element_text(angle = 45,
+        drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = COLORS) +
+        theme_classic() + theme(axis.text.x = element_text(angle = 45,
         hjust = 1)) + ylab("Relative abundance (%)") + guides(fill = guide_legend(reverse = TRUE)) +
         labs(fill = level)
 
