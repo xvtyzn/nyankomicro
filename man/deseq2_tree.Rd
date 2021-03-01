@@ -8,7 +8,8 @@ deseq2_tree(
   physeq,
   deseq2_results,
   level = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
-  padj = 0.05
+  alpha = 0.05,
+  sample_annotation = "Status"
 )
 }
 \arguments{
@@ -18,7 +19,7 @@ deseq2_tree(
 
 \item{level}{visualize taxonomy level}
 
-\item{padj}{threshold of adjusted p-values}
+\item{alpha}{threshold of adjusted p-values}
 }
 \value{
 ggplot2 object
