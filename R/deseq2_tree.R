@@ -47,16 +47,16 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
     fc_gg <- sigtab %>% ggplot(aes(y = ASV, x = log2FoldChange, color = get(level))) +
         geom_point(size = 3) + geom_segment(aes(x = 0, xend = log2FoldChange,
         y = ASV, yend = ASV), color = "grey") + theme(axis.text.x = element_text(angle = -90,
-        hjust = 0, vjust = 0.5)) + ylab(NULL) + theme_minimal() + theme(axis.text.x = element_text(angle = 90,
+        hjust = 0, vjust = 0.5)) + ylab(NULL) + theme_minimal() + theme(axis.text.x = element_text(angle = 45,
         hjust = 0), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-        scale_color_simpsons() + theme(legend.position = "none")
+        scale_color_manual(values = nyankocolors) + theme(legend.position = "none")
 
     p_gg2 <- sigtab %>% mutate(log2padj = -log2(padj))
 
     p_gg <- p_gg2 %>% ggplot(aes(y = ASV, x = log2padj, fill = get(level))) + geom_bar(stat = "identity") + ylab(NULL) +
-        theme_minimal() + theme(axis.text.x = element_text(angle = 90, hjust = 0),
+        theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 0),
         axis.text.y = element_blank(), legend.text = element_text(face = "italic")) +
-        scale_fill_simpsons()
+        scale_fill_manual(values = nyankocolors)
 
     ggtree_korogi <- fc_gg %>% insert_left(p_gg) %>% insert_left(gh) %>% insert_left(gt)
 
