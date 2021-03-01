@@ -3,7 +3,7 @@
 #' @param physeq phyloseq object
 #' @param deseq2_results deseq2 results object
 #' @param level visualize taxonomy level
-#' @param padj threshold of adjusted p-values
+#' @param alpha threshold of adjusted p-values
 #'
 #' @return ggplot2 object
 #'
@@ -21,7 +21,7 @@
 #' @export
 #'
 deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
-    "Class", "Order", "Family", "Genus", "Species"), padj = 0.05, sample_annotation = Status) {
+    "Class", "Order", "Family", "Genus", "Species"), alpha = 0.05, sample_annotation = Status) {
     sig_asv <- deseq2_results %>% as.data.frame() %>% dplyr::filter(padj < alpha)
 
     sig_tax <- physeq %>% tax_table() %>% as.data.frame() %>% rownames_to_column("ASV") %>%
