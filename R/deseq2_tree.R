@@ -21,7 +21,7 @@
 #' @export
 #'
 deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
-    "Class", "Order", "Family", "Genus", "Species"), alpha = 0.05, sample_annotation = "Status") {
+    "Class", "Order", "Family", "Genus", "Species"), alpha = 0.05, sample_annotation = "Status", colors = nyankocolors) {
     sig_asv <- deseq2_results %>% as.data.frame() %>% dplyr::filter(padj < alpha)
 
     sig_tax <- physeq %>% tax_table() %>% as.data.frame() %>% rownames_to_column("ASV") %>%
@@ -49,14 +49,14 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
         y = ASV, yend = ASV), color = "grey") + theme(axis.text.x = element_text(angle = -90,
         hjust = 0, vjust = 0.5)) + ylab(NULL) + theme_minimal() + theme(axis.text.x = element_text(angle = 45,
         hjust = 0), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-        scale_color_manual(values = nyankocolors) + theme(legend.position = "none")
+        scale_color_manual(values = colors) + theme(legend.position = "none")
 
     p_gg2 <- sigtab %>% mutate(log2padj = -log2(padj))
 
     p_gg <- p_gg2 %>% ggplot(aes(y = ASV, x = log2padj, fill = get(level))) + geom_bar(stat = "identity") + ylab(NULL) +
         theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 0),
         axis.text.y = element_blank(), legend.text = element_text(face = "italic")) +
-        scale_fill_manual(values = nyankocolors)
+        scale_fill_manual(values = colors)
 
     ggtree_korogi <- fc_gg %>% insert_left(p_gg) %>% insert_left(gh) %>% insert_left(gt)
 

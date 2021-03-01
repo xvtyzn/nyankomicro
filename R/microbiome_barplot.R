@@ -27,7 +27,7 @@
 #'
 microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     "Order", "Family", "Genus", "Species"), plot_category, plot_percent = 10,
-    threshold = "max", na_str = c("unidentified", "uncultured")) {
+    threshold = "max", na_str = c("unidentified", "uncultured"), colors = nyankocolors) {
 
     agg_phylo <- speedyseq::tax_glom(physeq, level, NArm = F)
     agg_phylo_rel <- transform_sample_counts(agg_phylo, function(x) 100 * x/sum(x))
@@ -75,7 +75,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 
     all_tax_table <- all_tax %>% select(-c(threshold,mean)) %>% t()
 
-    if (nrow(all_tax) > length(nyankocolors)) {
+    if (nrow(all_tax) > length(colors)) {
         stop("You have exceeded the number of colors allowed.
          Increase the percent value for thresholds.\n")
     }
@@ -88,12 +88,12 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 
     taxa_data_uniq <- unique(all_ggdata$variable)
     all_ggdata$Taxa <- factor(all_ggdata$variable, levels = rev(taxa_data_uniq))
-    nyankocolors <- rev(nyankocolors[1:length(taxa_data_uniq)])
-    nyankocolors[1:2] <- c("grey30", "grey")
+    colors <- rev(colors[1:length(taxa_data_uniq)])
+    colors[1:2] <- c("grey30", "grey")
 
     gg_bar <- ggplot2::ggplot(all_ggdata, aes(x = Sample, y = value, fill = Taxa)) +
         geom_bar(stat = "identity") + facet_grid(~get(plot_category), margins = FALSE,
-        drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = nyankocolors) +
+        drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = colors) +
         theme_classic() + theme(axis.text.x = element_text(angle = 45,
         hjust = 1)) + ylab("Relative abundance (%)") + guides(fill = guide_legend(reverse = TRUE)) +
         labs(fill = level)
