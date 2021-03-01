@@ -39,7 +39,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
 
     physeq_sig <- prune_taxa(sigtab$ASV, physeq)
 
-    gt <- physeq_sig %>% phy_tree() %>% ggtree() + geom_tiplab(align = TRUE)
+    gt <- physeq_sig %>% phy_tree() %>% ggtree() + geom_tiplab(align = TRUE) + xlim(0, 0.08)
 
     rate_otu <- t(otu_table(physeq))/rowSums(t(otu_table(physeq)))
     sig_rate_otu <- as.data.frame(rate_otu[, rownames(sigtab)])
