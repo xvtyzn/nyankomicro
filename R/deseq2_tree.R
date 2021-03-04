@@ -45,7 +45,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
     sig_rate_otu <- as.data.frame(rate_otu[, rownames(sigtab)])
 
     tt <- cbind(log(sig_rate_otu + 1), sample_data(physeq_sig)[, 1]) %>% rownames_to_column("Sample") %>%
-        pivot_longer(c(-Sample, -Status), names_to = "ASV", values_to = "read")
+        pivot_longer(c(-Sample, -get(sample_annotation)), names_to = "ASV", values_to = "read")
 
     gh <- tt %>% ggplot() + geom_tile(aes(x = Sample, y = ASV, fill = get(sample_annotation),
         alpha = read)) + scale_alpha_continuous(aes(show.legend = Relative_Abundance)) +
