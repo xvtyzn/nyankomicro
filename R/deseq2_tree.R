@@ -22,7 +22,8 @@
 #' @export
 #'
 deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
-    "Class", "Order", "Family", "Genus", "Species"), alpha = 0.05, sample_annotation = "Status", colors = nyankocolors) {
+    "Class", "Order", "Family", "Genus", "Species"), alpha = 0.05, sample_annotation = "Status", colors = nyankocolors,
+    tree_adjust = 1.2) {
 
     colors <- c("#E41A1C", "#377EB8", "#4DAF4A", "#984EA3", "#FF7F00", "#FFFF33",
                 "#A65628", "#F781BF", "#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
@@ -40,7 +41,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
 
     physeq_sig <- prune_taxa(sigtab$ASV, physeq)
 
-    gt <- physeq_sig %>% phy_tree() %>% ggtree() + geom_tiplab(align = TRUE) + xlim(0, 0.08)
+    gt <- physeq_sig %>% phy_tree() %>% ggtree() + geom_tiplab(align = TRUE) + xlim(0, tree_adjust)
 
     rate_otu <- t(otu_table(physeq))/rowSums(t(otu_table(physeq)))
     sig_rate_otu <- as.data.frame(rate_otu[, rownames(sigtab)])
@@ -67,7 +68,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
         axis.text.y = element_blank(), legend.text = element_text(face = "italic")) +
         scale_fill_manual(values = colors)
 
-    ggtree_korogi <- fc_gg %>% insert_left(p_gg) %>% insert_left(gh) %>% insert_left(gt)
+    ggtree_plot <- fc_gg %>% insert_left(p_gg) %>% insert_left(gh) %>% insert_left(gt)
 
-    return(ggtree_korogi)
+    return(ggtree_plot)
 }
