@@ -49,10 +49,13 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
     tt <- cbind(log(sig_rate_otu + 1), sample_data(physeq_sig)[, sample_annotation]) %>% rownames_to_column("Sample") %>%
         pivot_longer(c(-Sample, -UQ(sample_annotation)), names_to = "ASV", values_to = "read")
 
+    mylevels <- tt$Sample
+    tt$Sample <- factor(tt$Sample,levels=unique(mylevels))
+
     gh <- tt %>% ggplot() + geom_tile(aes(x = Sample, y = ASV, fill = get(sample_annotation),
-        alpha = read)) + scale_alpha_continuous(aes(show.legend = Relative_Abundance)) +
+        alpha = read)) + scale_alpha_continuous(aes(show.legend = "Relative Abundance")) +
         ylab(NULL) + theme_minimal() + theme(axis.text.x = element_text(angle = 45,
-        hjust = 1), axis.text.y = element_blank(), axis.ticks.y = element_blank())
+        hjust = 1), axis.text.y = element_blank(), axis.ticks.y = element_blank()) + labs(fill = sample_annotation)
 
     fc_gg <- sigtab %>% ggplot(aes(y = ASV, x = log2FoldChange, color = get(level))) +
         geom_point(size = 3) + geom_segment(aes(x = 0, xend = log2FoldChange,
@@ -66,7 +69,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
     p_gg <- p_gg2 %>% ggplot(aes(y = ASV, x = log2padj, fill = get(level))) + geom_bar(stat = "identity") + ylab(NULL) +
         theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 0),
         axis.text.y = element_blank(), legend.text = element_text(face = "italic")) +
-        scale_fill_manual(values = colors)
+        scale_fill_manual(values = colors) + labs(fill = level)
 
     ggtree_plot <- fc_gg %>% insert_left(p_gg) %>% insert_left(gh) %>% insert_left(gt)
 
