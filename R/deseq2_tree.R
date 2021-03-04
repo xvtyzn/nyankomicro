@@ -45,7 +45,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
     rate_otu <- t(otu_table(physeq))/rowSums(t(otu_table(physeq)))
     sig_rate_otu <- as.data.frame(rate_otu[, rownames(sigtab)])
 
-    tt <- cbind(log(sig_rate_otu + 1), sample_data(physeq_sig)[, 1]) %>% rownames_to_column("Sample") %>%
+    tt <- cbind(log(sig_rate_otu + 1), sample_data(physeq_sig)[, sample_annotation]) %>% rownames_to_column("Sample") %>%
         pivot_longer(c(-Sample, -UQ(sample_annotation)), names_to = "ASV", values_to = "read")
 
     gh <- tt %>% ggplot() + geom_tile(aes(x = Sample, y = ASV, fill = get(sample_annotation),
