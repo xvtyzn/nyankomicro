@@ -9,7 +9,9 @@ deseq2_tree(
   deseq2_results,
   level = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
   alpha = 0.05,
-  sample_annotation = "Status"
+  sample_annotation = "Status",
+  colors = nyankocolors,
+  tree_adjust = 1.2
 )
 }
 \arguments{
@@ -20,6 +22,12 @@ deseq2_tree(
 \item{level}{visualize taxonomy level}
 
 \item{alpha}{threshold of adjusted p-values}
+
+\item{sample_annotation}{sample metadata used for drawing}
+
+\item{colors}{color palette}
+
+\item{tree_adjust}{value for ggtree positioning.}
 }
 \value{
 ggplot2 object

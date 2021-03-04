@@ -35,6 +35,8 @@ devtools::update_packages("nyankomicro")
 
 ## Example
 
+### Barplot
+
 ``` r
 library(phyloseq)
 library(nyankomicro)
@@ -43,4 +45,28 @@ data("GlobalPatterns")
 microbiome_barplot(GlobalPatterns, "Order", "SampleType", 10)
 ```
 
-<img src="man/figures/README-exaple-1.png" width="100%" />
+<img src="man/figures/README-example1-1.png" width="100%" />
+
+### 
+
+### DEseq2 plot
+
+plot(ggtree\_subGP)
+
+``` r
+library(DESeq2)
+library(tidyverse)
+
+subGP <- subset_samples(GlobalPatterns, SampleType %in% c("Skin", "Tongue") )
+  
+deseq2_subGP <- subGP %>%
+  phyloseq_to_deseq2(~SampleType) %>%
+  DESeq(test="Wald", fitType="parametric") %>%
+  results(cooksCutoff = FALSE)
+
+ggtree_subGP <- deseq2_tree(subGP, deseq2_subGP,level = "Phylum", alpha = 0.01,
+                            sample_annotation = "SampleType")
+ggtree_subGP
+```
+
+<img src="man/figures/README-example2-1.png" width="100%" />

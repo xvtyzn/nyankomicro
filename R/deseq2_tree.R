@@ -4,6 +4,9 @@
 #' @param deseq2_results deseq2 results object
 #' @param level visualize taxonomy level
 #' @param alpha threshold of adjusted p-values
+#' @param sample_annotation sample metadata used for drawing
+#' @param colors color palette
+#' @param tree_adjust vvalue for ggtree positioning.
 #'
 #' @return ggplot2 object
 #'
@@ -43,7 +46,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
 
     gt <- physeq_sig %>% phy_tree() %>% ggtree() + geom_tiplab(align = TRUE) + xlim(0, tree_adjust)
 
-    rate_otu <- t(otu_table(physeq))/rowSums(t(otu_table(physeq)))
+    rate_otu <- transform_sample_counts(physeq, function(x) 100 * x/sum(x)) %>% otu_table() %>% as.data.frame() %>% t()
     sig_rate_otu <- as.data.frame(rate_otu[, rownames(sigtab)])
 
     tt <- cbind(log(sig_rate_otu + 1), sample_data(physeq_sig)[, sample_annotation]) %>% rownames_to_column("Sample") %>%
