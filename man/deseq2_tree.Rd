@@ -27,7 +27,7 @@ deseq2_tree(
 
 \item{colors}{color palette}
 
-\item{tree_adjust}{value for ggtree positioning.}
+\item{tree_adjust}{vvalue for ggtree positioning.}
 }
 \value{
 ggplot2 object

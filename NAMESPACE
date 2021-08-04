@@ -2,6 +2,7 @@
 
 export("%>%")
 export(deseq2_tree)
+export(microbiome_bardata)
 export(microbiome_barplot)
 import(DESeq2)
 import(aplot)
