@@ -5,7 +5,7 @@
 #' @title microbiome_barplot
 #' @param physeq phyloseq object
 #' @param level taxonomy level
-#' @param plot_category metadata category
+#' @param plot_category metadata category (expect a vector of strings containing categories)
 #' @param plot_percent threshold persent
 #' @param threshold the way of calculating threshold values
 #' @param na_str taxa name to be Undetermined
@@ -18,9 +18,11 @@
 #' @importFrom phyloseq sample_data
 #' @importFrom reshape2 melt
 #' @importFrom purrr reduce
+#' @importFrom stats formula
 #' @import dplyr
 #' @import tibble
 #' @import ggplot2
+#' @import ggh4x
 #'
 #' @export
 #'
@@ -31,14 +33,15 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 
     all_ggdata <- microbiome_bardata(physeq, level, plot_category, plot_percent,
                                      threshold, na_str)
-    colors <- rev(colors[1:length(taxa_data_uniq)])
+    colors <- rev(colors[1:length(unique(all_ggdata$Taxa))])
     colors[1:2] <- c("grey30", "grey")
 
     gg_bar <- ggplot2::ggplot(all_ggdata, aes(x = Sample, y = value, fill = Taxa)) +
-        geom_bar(stat = "identity") + facet_grid(~get(plot_category), margins = FALSE,
+        geom_bar(stat = "identity") + facet_nested(formula(paste("~",paste(plot_category, collapse = "+"))), margins = FALSE,
         drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = colors) +
         theme_classic() + theme(axis.text.x = element_text(angle = 45,
-        hjust = 1), legend.text = element_text(face = "italic")) + ylab("Relative abundance (%)") + guides(fill = guide_legend(reverse = TRUE)) +
+        hjust = 1), legend.text = element_text(face = "italic")) + ylab("Relative abundance (%)") +
+        guides(fill = guide_legend(reverse = TRUE)) +
         labs(fill = level)
 
     return(gg_bar)

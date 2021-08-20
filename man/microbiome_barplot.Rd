@@ -18,7 +18,7 @@ microbiome_barplot(
 
 \item{level}{taxonomy level}
 
-\item{plot_category}{metadata category}
+\item{plot_category}{metadata category (expect a vector of strings containing categories)}
 
 \item{plot_percent}{threshold persent}
 
