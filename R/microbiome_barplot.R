@@ -47,6 +47,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     return(gg_bar)
 }
 
+
 #' Create a bacterial composition data for a plot
 #'
 #' Create a bacterial composition data using a specific threshold value.
@@ -56,7 +57,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 #' @param level taxonomy level
 #' @param plot_category metadata category
 #' @param plot_percent threshold persent
-#' @param threshold the way of calculating threshold values
+#' @param thresholds the way of calculating threshold values
 #' @param na_str taxa name to be Undetermined
 #'
 #' @return
@@ -76,7 +77,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 #' @examples
 microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
                                                  "Order", "Family", "Genus", "Species"), plot_category, plot_percent = 10,
-                               threshold = "max", na_str = c("unidentified", "uncultured")) {
+                               thresholds = "max", na_str = c("unidentified", "uncultured")) {
 
     agg_phylo <- speedyseq::tax_glom(physeq, level, NArm = F)
     agg_phylo_rel <- transform_sample_counts(agg_phylo, function(x) 100 * x/sum(x))
@@ -88,11 +89,11 @@ microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
         summarise_all(sum) %>% remove_rownames() %>% column_to_rownames(level)
     taxotu_table$mean <- apply(taxotu_table, 1, mean)
 
-    if (threshold == "min") {
+    if (thresholds == "min") {
         taxotu_table$threshold <- apply(taxotu_table, 1, min)
-    } else if (threshold == "max") {
+    } else if (thresholds == "max") {
         taxotu_table$threshold <- apply(taxotu_table, 1, max)
-    } else if (threshold == "mean") {
+    } else if (thresholds == "mean") {
         taxotu_table$threshold <- apply(taxotu_table, 1, mean)
     } else {
         warning("You have not set function option.
