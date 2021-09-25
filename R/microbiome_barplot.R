@@ -123,7 +123,7 @@ microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     rownames(all_tax)[n-1] <- "Undetermined"
     rownames(all_tax)[n] <- paste0("Others (<", plot_percent, "%)")
 
-    all_tax_table <- all_tax %>% select(-c(threshold,mean)) %>% t()
+    all_tax_table <- all_tax %>% dplyr::select(-c(threshold,mean)) %>% t()
 
     if (nrow(all_tax) > length(colors)) {
         stop("You have exceeded the number of colors allowed.
