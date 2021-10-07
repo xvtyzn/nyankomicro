@@ -57,7 +57,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 #' @param level taxonomy level
 #' @param plot_category metadata category
 #' @param plot_percent threshold persent
-#' @param thresholds the way of calculating threshold values
+#' @param threshold the way of calculating threshold values
 #' @param na_str taxa name to be Undetermined
 #'
 #' @return
@@ -77,7 +77,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
 #' @examples
 microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
                                                  "Order", "Family", "Genus", "Species"), plot_category, plot_percent = 10,
-                               thresholds = "max", na_str = c("unidentified", "uncultured")) {
+                               threshold = "max", na_str = c("unidentified", "uncultured")) {
 
     agg_phylo <- speedyseq::tax_glom(physeq, level, NArm = F)
     agg_phylo_rel <- transform_sample_counts(agg_phylo, function(x) 100 * x/sum(x))
@@ -89,11 +89,11 @@ microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
         summarise_all(sum) %>% remove_rownames() %>% column_to_rownames(level)
     taxotu_table$mean <- apply(taxotu_table, 1, mean)
 
-    if (thresholds == "min") {
+    if (threshold == "min") {
         taxotu_table$threshold <- apply(taxotu_table, 1, min)
-    } else if (thresholds == "max") {
+    } else if (threshold == "max") {
         taxotu_table$threshold <- apply(taxotu_table, 1, max)
-    } else if (thresholds == "mean") {
+    } else if (threshold == "mean") {
         taxotu_table$threshold <- apply(taxotu_table, 1, mean)
     } else {
         warning("You have not set function option.
@@ -124,11 +124,6 @@ microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     rownames(all_tax)[n] <- paste0("Others (<", plot_percent, "%)")
 
     all_tax_table <- all_tax %>% dplyr::select(-c(threshold,mean)) %>% t()
-
-    if (nrow(all_tax) > length(colors)) {
-        stop("You have exceeded the number of colors allowed.
-         Increase the percent value for thresholds.\n")
-    }
 
     sample_status <- agg_phylo %>% sample_data() %>% as.matrix() %>% as.data.frame() %>%
         rownames_to_column("Sample")
