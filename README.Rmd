@@ -71,6 +71,7 @@ microbiome_barplot(enterotype_na_omited, "Genus", c("Nationality", "ClinicalStat
 ```{r example2, fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
 library(DESeq2)
 library(tidyverse)
+data("GlobalPatterns")
 
 subGP <- subset_samples(GlobalPatterns, SampleType %in% c("Skin", "Tongue") )
   
@@ -84,12 +85,12 @@ ggtree_subGP <- deseq2_tree(subGP, deseq2_subGP,level = "Phylum", alpha = 0.01,
 ggtree_subGP
 ```
 
-#### family level
+#### Genus level
 
-```{r example2 family, eval=FALSE, fig.height=6, fig.width=12, include=FALSE}
-ggtree_subGP_family <- deseq2_tree(subGP, deseq2_subGP,level = "Phylum", alpha = 0.01,
+```{r example2 family, fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
+ggtree_subGP_genus <- deseq2_tree(subGP, deseq2_subGP,level = "Genus", alpha = 0.01,
                             sample_annotation = "SampleType", vis_domain = TRUE)
-ggtree_subGP_family 
+ggtree_subGP_genus
 ```
 
 ### Core microbiome estimation

@@ -74,6 +74,7 @@ microbiome_barplot(enterotype_na_omited, "Genus", c("Nationality", "ClinicalStat
 ``` r
 library(DESeq2)
 library(tidyverse)
+data("GlobalPatterns")
 
 subGP <- subset_samples(GlobalPatterns, SampleType %in% c("Skin", "Tongue") )
   
@@ -89,7 +90,16 @@ ggtree_subGP
 
 <img src="man/figures/README-example2-1.png" width="100%" />
 
-#### family level
+#### Genus level
+
+``` r
+ggtree_subGP_genus <- deseq2_tree(subGP, deseq2_subGP,level = "Genus", alpha = 0.01,
+                            sample_annotation = "SampleType", vis_domain = TRUE)
+#> [1] "12ASVs were removed\n"
+ggtree_subGP_genus
+```
+
+<img src="man/figures/README-example2 family-1.png" width="100%" />
 
 ### Core microbiome estimation
 
