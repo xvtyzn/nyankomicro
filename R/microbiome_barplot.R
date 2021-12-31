@@ -37,12 +37,19 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     colors[1:2] <- c("grey30", "grey")
 
     gg_bar <- ggplot2::ggplot(all_ggdata, aes(x = Sample, y = value, fill = Taxa)) +
-        geom_bar(stat = "identity") + facet_nested(formula(paste("~",paste(plot_category, collapse = "+"))), margins = FALSE,
-        drop = TRUE, scales = "free", space = "free") + scale_fill_manual(values = colors) +
-        theme_classic() + theme(axis.text.x = element_text(angle = 45,
-        hjust = 1), legend.text = element_text(face = "italic")) + ylab("Relative abundance (%)") +
-        guides(fill = guide_legend(reverse = TRUE)) +
-        labs(fill = level)
+      geom_bar(stat = "identity") +
+      facet_nested(formula(paste("~",paste(plot_category, collapse = "+"))), margins = FALSE,
+                   drop = TRUE, scales = "free", space = "free") +
+      scale_fill_manual(values = colors) +
+      theme_classic() + theme(axis.text.x = element_text(angle = 45,hjust = 1)) +
+      ylab("Relative abundance (%)") +
+      guides(fill = guide_legend(reverse = TRUE)) +
+      labs(fill = level)
+
+    if(level %in% c("Family", "Genus", "Species")){
+      gg_bar <- gg_bar + theme(axis.text.x = element_text(angle = 45,hjust = 1),
+                               legend.text = element_text(face = "italic"))
+    }
 
     return(gg_bar)
 }
