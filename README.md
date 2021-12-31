@@ -47,11 +47,16 @@ microbiome_barplot(GlobalPatterns, "Order", "SampleType", 10)
 
 <img src="man/figures/README-example1-1.png" width="100%" />
 
-### 
+Following the naming conventions for bacteria, italics are used to
+classify bacteria below the family level.
+
+``` r
+microbiome_barplot(GlobalPatterns, "Family", "SampleType", 10)
+```
+
+<img src="man/figures/README-example1 family level-1.png" width="100%" />
 
 ### DEseq2 plot
-
-plot(ggtree\_subGP)
 
 ``` r
 library(DESeq2)
@@ -61,7 +66,7 @@ subGP <- subset_samples(GlobalPatterns, SampleType %in% c("Skin", "Tongue") )
   
 deseq2_subGP <- subGP %>%
   phyloseq_to_deseq2(~SampleType) %>%
-  DESeq(test="Wald", fitType="parametric") %>%
+  DESeq() %>%
   results(cooksCutoff = FALSE)
 
 ggtree_subGP <- deseq2_tree(subGP, deseq2_subGP,level = "Phylum", alpha = 0.01,
@@ -70,3 +75,7 @@ ggtree_subGP
 ```
 
 <img src="man/figures/README-example2-1.png" width="100%" />
+
+### Core microbiome estimation
+
+コアmicrobiomeの決定には複数の議論が存在します。
