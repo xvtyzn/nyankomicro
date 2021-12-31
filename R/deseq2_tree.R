@@ -72,12 +72,12 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
         geom_point(aes(y = !!sym(level), color = !!sym(level)), position = position_jitter(width = 0.15), size = 1, alpha = 0.4) +
         geom_boxplot(width = 0.2, outlier.shape = NA, alpha = 0.8)  +
         theme(axis.text.x = element_text(angle = -90, hjust = 0, vjust = 0.5)) +
-        ylab(NULL) + theme_minimal() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 0), axis.text.y = element_blank(), axis.ticks.y = element_blank()) +
-        scale_color_manual(values = colors) + theme(legend.position = "none")
+        ylab(NULL) + theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 0),
+                                             axis.text.y = element_blank(), legend.text = element_text(face = "italic")) +
+        scale_fill_manual(values = colors) + scale_color_manual(values = colors) + labs(fill = level) + theme(legend.position = "none")
 
       # log2pvalues
-      p_gg <- p_gg2 %>% ggplot(aes(y = !!sym(level), x = padj, fill = !!sym(level))) +
+      p_gg <- sigtab %>% ggplot(aes(y = !!sym(level), x = padj, fill = !!sym(level))) +
         geom_point(aes(y = !!sym(level), color = !!sym(level)), position = position_jitter(width = 0.15), size = 1, alpha = 0.4) +
         geom_boxplot(width = 0.2, outlier.shape = NA, alpha = 0.8)  +
         ylab(NULL) +
@@ -93,6 +93,7 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
         ggplot(aes(y = !!sym(level), x = num, fill = !!sym(level))) + geom_bar(stat = "identity") +
         theme_minimal() + theme(axis.text.x = element_text(angle = 45, hjust = 0),
                                 axis.text.y = element_blank(), legend.text = element_text(face = "italic")) +
+        ylab(NULL) +
         scale_fill_manual(values = colors)
 
       # merge using aplot
@@ -101,9 +102,8 @@ deseq2_tree <- function(physeq, deseq2_results, level = c("Kingdom", "Phylum",
         insert_left(num_tax) %>%
         insert_left(gt)
 
-
     } else {
-      physeq_sig <- physeq_sig
+      physeq_sig <- prune_taxa(sigtab$ASV, physeq)
 
       gt <- physeq_sig %>%
         phy_tree() %>%
@@ -181,3 +181,4 @@ tax_with_deseq2 <- function(physeq, deseq2_results, alpha = 0.05){
 
   return(sigtab)
 }
+
