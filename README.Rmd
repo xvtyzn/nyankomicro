@@ -55,7 +55,18 @@ Following the naming conventions for bacteria, italics are used to classify bact
 microbiome_barplot(GlobalPatterns, "Family", "SampleType", 10)
 ```
 
+nestしたカテゴリの可視化も可能です。
+
+```{r example1 nested, fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
+data(enterotype)
+enterotype_na_omited <- subset_samples(enterotype, !is.na(Nationality))
+
+microbiome_barplot(enterotype_na_omited, "Genus", c("Nationality", "ClinicalStatus"), 10)
+```
+
 ### DEseq2 plot
+
+#### ASV level
 
 ```{r example2, fig.height=6, fig.width=12, message=FALSE, warning=FALSE}
 library(DESeq2)
@@ -73,10 +84,34 @@ ggtree_subGP <- deseq2_tree(subGP, deseq2_subGP,level = "Phylum", alpha = 0.01,
 ggtree_subGP
 ```
 
+#### family level
+
+```{r example2 family, eval=FALSE, fig.height=6, fig.width=12, include=FALSE}
+ggtree_subGP_family <- deseq2_tree(subGP, deseq2_subGP,level = "Phylum", alpha = 0.01,
+                            sample_annotation = "SampleType", vis_domain = TRUE)
+ggtree_subGP_family 
+```
+
 ### Core microbiome estimation
 
 コアmicrobiomeの決定には複数の議論が存在します。
 
+そのため、以下ではcore microbiomeの決定のために便利な幾つかの関数を提示します
+
+#### threholdによる変動
+
 ```{r example3, fig.height=12, fig.width=6, message=FALSE, warning=FALSE}
+
+```
+
+#### ベン図での可視化
+
+```{r fig.height=6, fig.width=12}
+
+```
+
+#### Upset図による可視化
+
+```{r fig.height=6, fig.width=12}
 
 ```

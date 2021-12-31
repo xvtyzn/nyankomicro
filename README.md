@@ -56,7 +56,20 @@ microbiome_barplot(GlobalPatterns, "Family", "SampleType", 10)
 
 <img src="man/figures/README-example1 family level-1.png" width="100%" />
 
+nestしたカテゴリの可視化も可能です。
+
+``` r
+data(enterotype)
+enterotype_na_omited <- subset_samples(enterotype, !is.na(Nationality))
+
+microbiome_barplot(enterotype_na_omited, "Genus", c("Nationality", "ClinicalStatus"), 10)
+```
+
+<img src="man/figures/README-example1 nested-1.png" width="100%" />
+
 ### DEseq2 plot
+
+#### ASV level
 
 ``` r
 library(DESeq2)
@@ -76,6 +89,17 @@ ggtree_subGP
 
 <img src="man/figures/README-example2-1.png" width="100%" />
 
+#### family level
+
 ### Core microbiome estimation
 
 コアmicrobiomeの決定には複数の議論が存在します。
+
+そのため、以下ではcore
+microbiomeの決定のために便利な幾つかの関数を提示します
+
+#### threholdによる変動
+
+#### ベン図での可視化
+
+#### Upset図による可視化
