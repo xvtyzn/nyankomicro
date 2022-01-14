@@ -83,6 +83,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
         names(other_color) <- undetermined_names
         # manualのカラーパレットで指定できなかった色をどうするかはまだ未実装
         colors <- manual_color_palette[[1]]
+        colors <- colors[names(colors) %in% as.character(unique(all_ggdata$Taxa))]
 
         remaining_tax <- setdiff(unique(all_ggdata$Taxa), c(names(colors), undetermined_names))
         add_colors <- manual_color_palette[[2]][1:length(remaining_tax)]
