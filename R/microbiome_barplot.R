@@ -7,6 +7,8 @@
 #' @param level taxonomy level
 #' @param plot_category metadata category (expect a vector of strings containing categories)
 #' @param plot_percent threshold persent
+#' @param color_methods coloring methods
+#' @param manual_color_palette
 #' @param threshold the way of calculating threshold values
 #' @param na_str taxa name to be Undetermined
 #'
@@ -29,12 +31,65 @@
 #'
 microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     "Order", "Family", "Genus", "Species"), plot_category, plot_percent = 10,
+    color_methods = c("abundance", "common", "manual"), manual_color_palette = NULL,
     threshold = "max", na_str = c("unidentified", "uncultured")) {
 
     all_ggdata <- microbiome_bardata(physeq, level, plot_category, plot_percent,
                                      threshold, na_str)
-    colors <- rev(colors[1:length(unique(all_ggdata$Taxa))])
-    colors[1:2] <- c("grey30", "grey")
+
+    if(color_methods == "abundance"){
+      colors <- rev(colors[1:length(unique(all_ggdata$Taxa))])
+      colors[1:2] <- c("grey30", "grey")
+    } else if(color_methods == "common"){
+      undetermined_names <- c("Undetermined", as.character(unique(all_ggdata$Taxa[nrow(all_ggdata)])))
+
+      colors <- switch(level,
+                       "Kingdom" = colors_kingdom,
+                        "Phylum" = colors_phylum,
+                        "Class" = colors_class,
+                        "Order" = colors_order,
+                        "Family" = colors_family,
+                        "Genus" = colors_genus)
+
+      # アノテーションに含まれるもののみを取り出す
+      colors <- colors[names(colors) %in% as.character(unique(aaa$Taxa))]
+
+      add_taxnomy <- switch(level,
+                            "Phylum" = setdiff(unique(all_ggdata$Taxa), c(names(colors_phylum), undetermined_names)),
+                            "Class" = setdiff(unique(all_ggdata$Taxa), c(names(colors_class), undetermined_names)),
+                            "Order" = setdiff(unique(all_ggdata$Taxa), c(names(colors_order), undetermined_names)),
+                            "Family" = setdiff(unique(all_ggdata$Taxa), c(names(colors_family), undetermined_names)),
+                            "Genus" = setdiff(unique(all_ggdata$Taxa), c(names(colors_genus), undetermined_names)))
+
+      add_taxnomy_colors <- switch(level,
+                                   "Phylum" = colors_phylum_other[1:length(add_taxnomy)],
+                                   "Class" = colors_class_other[1:length(add_taxnomy)],
+                                   "Order" = colors_order_other[1:length(add_taxnomy)],
+                                   "Family" = colors_family_other[1:length(add_taxnomy)],
+                                   "Genus" = colors_genus_other[1:length(add_taxnomy)])
+
+      names(add_taxnomy_colors) <- add_taxnomy
+      other_color <- c("grey", "grey30")
+      names(other_color) <- undetermined_names
+      colors <- rev(c(colors, add_taxnomy_colors, other_color))
+
+    } else if (color_methods == "manual"){
+
+      if(is_null(manual_color_palette)){
+        stop("カラーパレットが指定されていません")
+      } else {
+        undetermined_names <- c("Undetermined", as.character(unique(all_ggdata$Taxa[nrow(all_ggdata)])))
+        other_color <- c("grey", "grey30")
+        names(other_color) <- undetermined_names
+
+        colors <- manual_color_palette
+        colors <- rev(c(manual_color_palette, other_color))
+      }
+
+    } else{
+      stop("有効なcolor methodsが指定されていません")
+    }
+
 
     gg_bar <- ggplot2::ggplot(all_ggdata, aes(x = Sample, y = value, fill = Taxa)) +
       geom_bar(stat = "identity") +
@@ -143,3 +198,18 @@ microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     return(all_ggdata)
 }
 
+#' create manual palette
+#'
+#' @param taxonomy_vec
+#'
+#' @return
+#' @export
+#'
+#' @examples
+create_color_palette <- function(taxonomy_vec){
+
+  manual_colors <- colors[1:length(taxonomy_vec)]
+  names(manual_colors) <- taxonomy_vec
+
+  return(manual_colors)
+}
