@@ -144,6 +144,11 @@ microbiome_bardata <- function(physeq, level = c("Kingdom", "Phylum", "Class",
     agg_phylo <- speedyseq::tax_glom(physeq, level, NArm = F)
     agg_phylo_rel <- transform_sample_counts(agg_phylo, function(x) 100 * x/sum(x))
     level_tax <- tax_table(agg_phylo_rel)[, level] %>% as.data.frame() %>% rownames_to_column("ASV")
+
+    if (!is.character(level_tax[,2])){
+      level_tax[,2] <- as.character(level_tax[,2])
+      }
+
     level_tax[is.na(level_tax)] <- "Undetermined"
 
     taxotu_table <- otu_table(agg_phylo_rel) %>% as.data.frame() %>% rownames_to_column("ASV") %>%
