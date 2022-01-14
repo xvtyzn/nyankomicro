@@ -52,7 +52,7 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
                         "Genus" = colors_genus)
 
       # アノテーションに含まれるもののみを取り出す
-      colors <- colors[names(colors) %in% as.character(unique(aaa$Taxa))]
+      colors <- colors[names(colors) %in% as.character(unique(all_ggdata$Taxa))]
 
       add_taxnomy <- switch(level,
                             "Phylum" = setdiff(unique(all_ggdata$Taxa), c(names(colors_phylum), undetermined_names)),
