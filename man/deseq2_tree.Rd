@@ -10,6 +10,7 @@ deseq2_tree(
   level = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
   alpha = 0.05,
   sample_annotation = "Status",
+  vis_domain = FALSE,
   colors = nyankocolors,
   tree_adjust = 1.2
 )
@@ -25,9 +26,11 @@ deseq2_tree(
 
 \item{sample_annotation}{sample metadata used for drawing}
 
+\item{vis_domain}{domain level}
+
 \item{colors}{color palette}
 
-\item{tree_adjust}{vvalue for ggtree positioning.}
+\item{tree_adjust}{value for ggtree positioning.}
 }
 \value{
 ggplot2 object

@@ -9,6 +9,8 @@ microbiome_barplot(
   level = c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"),
   plot_category,
   plot_percent = 10,
+  color_methods = c("abundance", "common", "manual"),
+  manual_color_palette = NULL,
   threshold = "max",
   na_str = c("unidentified", "uncultured")
 )
@@ -21,6 +23,8 @@ microbiome_barplot(
 \item{plot_category}{metadata category (expect a vector of strings containing categories)}
 
 \item{plot_percent}{threshold persent}
+
+\item{color_methods}{coloring methods}
 
 \item{threshold}{the way of calculating threshold values}
 
