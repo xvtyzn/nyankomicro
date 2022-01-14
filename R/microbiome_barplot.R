@@ -81,9 +81,14 @@ microbiome_barplot <- function(physeq, level = c("Kingdom", "Phylum", "Class",
         undetermined_names <- c("Undetermined", as.character(unique(all_ggdata$Taxa[nrow(all_ggdata)])))
         other_color <- c("grey", "grey30")
         names(other_color) <- undetermined_names
+        # manualのカラーパレットで指定できなかった色をどうするかはまだ未実装
+        colors <- manual_color_palette[[1]]
 
-        colors <- manual_color_palette
-        colors <- rev(c(manual_color_palette, other_color))
+        remaining_tax <- setdiff(unique(all_ggdata$Taxa), c(names(colors), undetermined_names))
+        add_colors <- manual_color_palette[[2]][1:length(remaining_tax)]
+        names(add_colors) <- remaining_tax
+
+        colors <- rev(c(colors, add_colors,other_color))
       }
 
     } else{
@@ -215,6 +220,10 @@ create_color_palette <- function(taxonomy_vec){
 
   manual_colors <- colors[1:length(taxonomy_vec)]
   names(manual_colors) <- taxonomy_vec
+  tmp1 <- length(taxonomy_vec)+1
+  tmp2 <- length(colors) - length(taxonomy_vec)
+  remaining_colors <- colors[tmp1:tmp2]
+  return_color <- list(manual_colors, remaining_colors)
 
-  return(manual_colors)
+  return(return_color)
 }
