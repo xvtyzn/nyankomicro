@@ -21,6 +21,7 @@
 #' @importFrom reshape2 melt
 #' @importFrom purrr reduce
 #' @importFrom stats formula
+#' @importFrom purrr is_null
 #' @import dplyr
 #' @import tibble
 #' @import ggplot2
